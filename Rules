@@ -1,0 +1,106 @@
+{
+  "rules": {
+
+    // ─────────────────────────────────────────────
+    // OWNER CONFIG  (owner credentials)
+    // Owner panel reads/writes via plain password check in JS.
+    // Public users never touch this node.
+    // ─────────────────────────────────────────────
+    "ownerConfig": {
+      ".read":  true,   // owner login screen reads id+password to verify
+      ".write": true    // owner panel updates credentials
+    },
+
+    // ─────────────────────────────────────────────
+    // HOSTS  (host accounts managed by owner)
+    // Owner: full CRUD
+    // Hosts: read own record only (keyed by push-id)
+    // Users: no access
+    // ─────────────────────────────────────────────
+    "hosts": {
+      ".read":  true,   // host panel needs to find its own record by hostId
+      ".write": true,   // owner panel creates / updates / deletes hosts
+
+      "$hostKey": {
+        ".read":  true,
+        ".write": true,
+
+        // Validate required fields on write
+        ".validate": "newData.hasChildren(['name','id','password','status'])"
+      }
+    },
+
+    // ─────────────────────────────────────────────
+    // SELLERS  (seller pages managed by hosts)
+    // Owner: full CRUD (toggle isHidden, delete with host)
+    // Hosts: create / update / delete their own seller page
+    // Users (alvara-user): read only (non-hidden sellers shown)
+    // ─────────────────────────────────────────────
+    "sellers": {
+      ".read":  true,   // user page & host panel both read all sellers to filter
+      ".write": true,   // host panel pushes / updates / deletes seller records
+
+      "$sellerId": {
+        ".read":  true,
+        ".write": true,
+
+        ".validate": "newData.hasChildren(['name'])"
+      }
+    },
+
+    // ─────────────────────────────────────────────
+    // CATEGORIES  (managed by owner)
+    // Owner: full CRUD + rename + toggle isHidden
+    // Hosts: read (to populate category picker)
+    // Users: read (to populate filter dropdown)
+    // ─────────────────────────────────────────────
+    "categories": {
+      ".read":  true,   // all three apps read categories
+      ".write": true,   // owner panel creates / renames / toggles / deletes
+
+      "$categoryKey": {
+        ".read":  true,
+        ".write": true,
+
+        ".validate": "newData.hasChildren(['name'])"
+      }
+    },
+
+    // ─────────────────────────────────────────────
+    // NOTIFICATIONS  (internal owner alerts)
+    // Owner panel: full CRUD (mark read, delete, clear all)
+    // Host panel: push new notification when seller is saved/deleted
+    // Users: no access
+    // ─────────────────────────────────────────────
+    "notifications": {
+      ".read":  true,   // owner dashboard reads badge count
+      ".write": true,   // owner + host panel push / update / remove
+
+      "$notifKey": {
+        ".read":  true,
+        ".write": true,
+
+        ".validate": "newData.hasChildren(['message','timestamp','isRead'])"
+      }
+    },
+
+    // ─────────────────────────────────────────────
+    // SUPPORT DETAILS  (contact info shown in user modal)
+    // Owner: write (set support details)
+    // Host: read (display support to their visitors)
+    // Users: read (shown in Help & Support modal)
+    // ─────────────────────────────────────────────
+    "supportDetails": {
+      ".read":  true,   // all apps read this
+      ".write": true    // owner panel sets it
+    },
+
+    // ─────────────────────────────────────────────
+    // DENY everything else
+    // ─────────────────────────────────────────────
+    "$other": {
+      ".read":  false,
+      ".write": false
+    }
+  }
+}
