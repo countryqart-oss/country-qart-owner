@@ -1,540 +1,1438 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country qart  - Owner Panel</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4a90e2; --primary-dark: #357abd; --primary-glow: rgba(74,144,226,0.18);
-            --bg: #f0f4f9; --surface: #ffffff; --surface2: #f4f7fc;
-            --text: #1a2340; --text-muted: #6b7a99; --border: #dde3ee;
-            --danger: #e74c3c; --success: #2ecc71; --warning: #f39c12;
-            --sidebar-w: 260px; --header-h: 64px;
-            --shadow-sm: 0 2px 8px rgba(74,144,226,.07); --shadow-md: 0 6px 24px rgba(74,144,226,.12); --shadow-lg: 0 16px 48px rgba(74,144,226,.18);
-            --radius: 14px; --radius-sm: 8px;
-        }
-        [data-theme="dark"] {
-            --bg: #0d1117; --surface: #161b25; --surface2: #1c2333; --text: #e6edf3;
-            --text-muted: #8b949e; --border: #30363d; --primary-glow: rgba(74,144,226,.12);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,.3); --shadow-md: 0 6px 24px rgba(0,0,0,.4); --shadow-lg: 0 16px 48px rgba(0,0,0,.5);
-        }
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); }
 
-        /* ── LOGIN ── */
-        #loginScreen {
-            position:fixed; inset:0; background:var(--bg); z-index:3000;
-            display:flex; justify-content:center; align-items:center;
-        }
-        .login-card {
-            background:var(--surface); border:1px solid var(--border); border-radius:24px;
-            padding:44px 40px; width:90%; max-width:420px; text-align:center; box-shadow:var(--shadow-lg);
-        }
-        .login-logo { font-family:'Playfair Display',serif; font-size:38px; font-style:italic; color:var(--primary); margin-bottom:4px; }
-        .login-badge {
-            display:inline-block; background:linear-gradient(135deg,var(--primary),#7c5fe6); color:white;
-            font-size:11px; font-weight:800; padding:4px 14px; border-radius:50px; letter-spacing:1px;
-            text-transform:uppercase; margin-bottom:26px;
-        }
-        .login-card input {
-            width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:10px;
-            background:var(--surface2); color:var(--text); font-family:'Outfit',sans-serif; font-size:15px;
-            margin-bottom:12px; outline:none; transition:border-color .2s,box-shadow .2s;
-        }
-        .login-card input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-glow); }
-        .btn-login {
-            width:100%; padding:14px; background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-            color:white; border:none; border-radius:10px; cursor:pointer; font-size:16px;
-            font-family:'Outfit',sans-serif; font-weight:700; transition:transform .2s,box-shadow .2s; margin-top:4px;
-        }
-        .btn-login:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(74,144,226,.4); }
-        #loginErr { color:var(--danger); font-size:13px; margin-top:12px; display:none; }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Country qart - Owner Panel</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap"
+            rel="stylesheet">
+        <style>
+            :root {
+                --primary: #4a90e2;
+                --primary-dark: #357abd;
+                --primary-glow: rgba(74, 144, 226, 0.18);
+                --bg: #f0f4f9;
+                --surface: #ffffff;
+                --surface2: #f4f7fc;
+                --text: #1a2340;
+                --text-muted: #6b7a99;
+                --border: #dde3ee;
+                --danger: #e74c3c;
+                --success: #2ecc71;
+                --warning: #f39c12;
+                --sidebar-w: 260px;
+                --header-h: 64px;
+                --shadow-sm: 0 2px 8px rgba(74, 144, 226, .07);
+                --shadow-md: 0 6px 24px rgba(74, 144, 226, .12);
+                --shadow-lg: 0 16px 48px rgba(74, 144, 226, .18);
+                --radius: 14px;
+                --radius-sm: 8px;
+            }
 
-        /* ── LAYOUT ── */
-        #appLayout { display:flex; min-height:100vh; }
+            [data-theme="dark"] {
+                --bg: #0d1117;
+                --surface: #161b25;
+                --surface2: #1c2333;
+                --text: #e6edf3;
+                --text-muted: #8b949e;
+                --border: #30363d;
+                --primary-glow: rgba(74, 144, 226, .12);
+                --shadow-sm: 0 2px 8px rgba(0, 0, 0, .3);
+                --shadow-md: 0 6px 24px rgba(0, 0, 0, .4);
+                --shadow-lg: 0 16px 48px rgba(0, 0, 0, .5);
+            }
 
-        /* ── SIDEBAR ── */
-        #ownerSidebar {
-            width:var(--sidebar-w); background:var(--surface); border-right:1px solid var(--border);
-            position:fixed; left:0; top:0; height:100vh; z-index:200; display:flex; flex-direction:column;
-            transition:transform .3s cubic-bezier(.22,1,.36,1); overflow-y:auto;
-        }
-        .sidebar-brand-area { padding:24px 20px 20px; border-bottom:1px solid var(--border); }
-        .sb-logo { font-family:'Playfair Display',serif; font-size:26px; font-style:italic; color:var(--primary); margin-bottom:6px; }
-        .sb-role { font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; }
-        .sb-nav { padding:16px 12px; flex:1; display:flex; flex-direction:column; gap:4px; }
-        .sb-item {
-            display:flex; align-items:center; gap:12px; padding:13px 16px; border-radius:10px;
-            color:var(--text-muted); background:none; border:none; font-family:'Outfit',sans-serif;
-            font-size:15px; font-weight:500; cursor:pointer; text-align:left; transition:all .2s; position:relative;
-        }
-        .sb-item i { width:20px; text-align:center; font-size:16px; }
-        .sb-item:hover { background:var(--primary-glow); color:var(--primary); }
-        .sb-item.active { background:var(--primary-glow); color:var(--primary); font-weight:700; }
-        .sb-item.active::before { content:''; position:absolute; left:0; top:50%; transform:translateY(-50%); width:3px; height:60%; background:var(--primary); border-radius:0 3px 3px 0; }
-        .sb-notif-badge { background:var(--danger); color:white; font-size:10px; font-weight:800; padding:2px 7px; border-radius:50px; margin-left:auto; }
-        .sb-footer { padding:16px 12px; border-top:1px solid var(--border); }
-        .sb-logout { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:10px; color:var(--danger); background:none; border:none; font-family:'Outfit',sans-serif; font-size:15px; font-weight:600; cursor:pointer; width:100%; transition:background .2s; }
-        .sb-logout:hover { background:rgba(231,76,60,.1); }
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        /* ── MAIN AREA ── */
-        #mainArea { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; }
+            body {
+                font-family: 'Outfit', sans-serif;
+                background: var(--bg);
+                color: var(--text);
+            }
 
-        /* ── HEADER ── */
-        #mainHeader {
-            height:var(--header-h); background:var(--surface); border-bottom:1px solid var(--border);
-            display:flex; align-items:center; justify-content:space-between; padding:0 28px;
-            position:sticky; top:0; z-index:100; box-shadow:var(--shadow-sm);
-        }
-        .header-title { font-size:20px; font-weight:800; }
-        .header-right { display:flex; align-items:center; gap:12px; }
-        .theme-toggle {
-            display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:50px;
-            border:1.5px solid var(--border); background:var(--surface2); cursor:pointer;
-            font-family:'Outfit',sans-serif; font-size:13px; font-weight:600; color:var(--text-muted);
-            transition:all .2s;
-        }
-        .theme-toggle:hover { border-color:var(--primary); color:var(--primary); }
-        .ham-btn { display:none; background:none; border:none; font-size:22px; cursor:pointer; color:var(--text-muted); padding:6px; border-radius:8px; }
-        .ham-btn:hover { color:var(--primary); background:var(--primary-glow); }
+            /* ── LOGIN ── */
+            #loginScreen {
+                position: fixed;
+                inset: 0;
+                background: var(--bg);
+                z-index: 3000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-        /* ── CONTENT ── */
-        .content-area { padding:28px; flex:1; }
-        .section { display:none; animation:fadeIn .35s ease both; }
-        .section.active { display:block; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+            .login-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                padding: 44px 40px;
+                width: 90%;
+                max-width: 420px;
+                text-align: center;
+                box-shadow: var(--shadow-lg);
+            }
 
-        .page-title { font-size:26px; font-weight:800; margin-bottom:6px; }
-        .page-subtitle { color:var(--text-muted); font-size:14px; margin-bottom:28px; }
+            .login-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 38px;
+                font-style: italic;
+                color: var(--primary);
+                margin-bottom: 4px;
+            }
 
-        /* ── METRIC CARDS ── */
-        .metrics-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:18px; margin-bottom:32px; }
-        .metric-card {
-            background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-            padding:22px 20px; box-shadow:var(--shadow-sm); transition:transform .2s,box-shadow .2s;
-        }
-        .metric-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
-        .metric-clickable { cursor:pointer; transition:transform .2s,box-shadow .2s,border-color .2s; border:1.5px solid transparent; }
-        .metric-clickable:hover { border-color:var(--primary); transform:translateY(-5px) scale(1.02); box-shadow:var(--shadow-lg); }
-        .metric-clickable:active { transform:scale(.97); }
-        .metric-arrow { font-size:10px; opacity:0; margin-left:4px; transition:opacity .2s,transform .2s; transform:translateX(-4px); }
-        .metric-clickable:hover .metric-arrow { opacity:.6; transform:translateX(0); }
-        .metric-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px; }
-        .metric-value { font-size:32px; font-weight:800; margin-bottom:4px; }
-        .metric-label { font-size:13px; color:var(--text-muted); font-weight:500; }
+            .login-badge {
+                display: inline-block;
+                background: linear-gradient(135deg, var(--primary), #7c5fe6);
+                color: white;
+                font-size: 11px;
+                font-weight: 800;
+                padding: 4px 14px;
+                border-radius: 50px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-bottom: 26px;
+            }
 
-        /* ── SECTION HEADER ── */
-        .sec-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
-        .sec-header h3 { font-size:18px; font-weight:800; }
+            .login-card input {
+                width: 100%;
+                padding: 13px 16px;
+                border: 1.5px solid var(--border);
+                border-radius: 10px;
+                background: var(--surface2);
+                color: var(--text);
+                font-family: 'Outfit', sans-serif;
+                font-size: 15px;
+                margin-bottom: 12px;
+                outline: none;
+                transition: border-color .2s, box-shadow .2s;
+            }
 
-        /* ── BUTTONS ── */
-        .btn { padding:10px 20px; border:none; border-radius:50px; cursor:pointer; font-family:'Outfit',sans-serif; font-size:13px; font-weight:700; transition:transform .2s,box-shadow .2s; display:inline-flex; align-items:center; gap:8px; }
-        .btn:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
-        .btn:active { transform:scale(.97); }
-        .btn-blue { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; }
-        .btn-danger { background:linear-gradient(135deg,#e74c3c,#c0392b); color:white; }
-        .btn-warning { background:linear-gradient(135deg,#f39c12,#e67e22); color:white; }
-        .btn-success { background:linear-gradient(135deg,#2ecc71,#27ae60); color:white; }
-        .btn-ghost { background:var(--surface2); color:var(--text); border:1.5px solid var(--border); }
-        .btn-ghost:hover { border-color:var(--primary); color:var(--primary); }
+            .login-card input:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px var(--primary-glow);
+            }
 
-        /* ── TABLE ── */
-        .table-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); overflow-x:auto; }
-        table { width:100%; border-collapse:collapse; min-width:600px; }
-        thead { background:var(--surface2); }
-        th { padding:14px 16px; font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; text-align:left; border-bottom:1px solid var(--border); }
-        td { padding:14px 16px; font-size:14px; border-bottom:1px solid var(--border); vertical-align:middle; }
-        tr:last-child td { border-bottom:none; }
-        tr:hover td { background:var(--surface2); }
-        .status-badge { padding:3px 10px; border-radius:50px; font-size:11px; font-weight:700; display:inline-block; }
-        .status-active { background:rgba(46,204,113,.15); color:#27ae60; border:1px solid rgba(46,204,113,.3); }
-        .status-suspended { background:rgba(231,76,60,.15); color:#e74c3c; border:1px solid rgba(231,76,60,.3); }
-        .td-actions { display:flex; gap:6px; flex-wrap:wrap; }
-        .action-chip { padding:5px 12px; border-radius:50px; border:1px solid var(--border); background:var(--surface2); cursor:pointer; font-size:11px; font-weight:700; font-family:'Outfit',sans-serif; color:var(--text-muted); transition:all .2s; display:inline-flex; align-items:center; gap:5px; }
-        .action-chip:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-glow); }
-        .action-chip.red:hover { border-color:var(--danger); color:var(--danger); background:rgba(231,76,60,.1); }
+            .btn-login {
+                width: 100%;
+                padding: 14px;
+                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                color: white;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                font-size: 16px;
+                font-family: 'Outfit', sans-serif;
+                font-weight: 700;
+                transition: transform .2s, box-shadow .2s;
+                margin-top: 4px;
+            }
 
-        /* ── NOTIFICATIONS ── */
-        .notif-item {
-            display:flex; align-items:flex-start; gap:14px; padding:16px 18px;
-            background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
-            margin-bottom:10px; transition:border-color .2s; position:relative;
-        }
-        .notif-item.unread { border-left:3px solid var(--primary); }
-        .notif-dot { width:38px; height:38px; border-radius:50%; background:var(--primary-glow); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-        .notif-body { flex:1; }
-        .notif-msg { font-size:14px; font-weight:500; margin-bottom:4px; }
-        .notif-time { font-size:11px; color:var(--text-muted); }
-        .notif-del { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; padding:4px; border-radius:6px; transition:color .2s; flex-shrink:0; }
-        .notif-del:hover { color:var(--danger); }
-        .empty-notif { text-align:center; padding:48px 24px; color:var(--text-muted); }
-        .empty-notif i { font-size:48px; opacity:.3; display:block; margin-bottom:14px; }
+            .btn-login:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(74, 144, 226, .4);
+            }
 
-        /* ── MODALS ── */
-        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(5px); justify-content:center; align-items:center; z-index:1000; padding:16px; }
-        .modal-overlay.open { display:flex; }
-        .modal-box {
-            background:var(--surface); width:100%; max-width:560px; max-height:92vh; overflow-y:auto;
-            border-radius:20px; padding:28px; border:1px solid var(--border); box-shadow:var(--shadow-lg);
-            animation:modalIn .35s cubic-bezier(.22,1,.36,1) both;
-        }
-        @keyframes modalIn { from{transform:translateY(30px) scale(.96);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
-        .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid var(--border); }
-        .modal-header h2 { font-size:20px; font-weight:800; }
-        .modal-close { background:var(--surface2); border:1px solid var(--border); color:var(--text); width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; transition:background .2s,transform .2s; }
-        .modal-close:hover { background:var(--danger); color:white; transform:rotate(90deg); }
+            #loginErr {
+                color: var(--danger);
+                font-size: 13px;
+                margin-top: 12px;
+                display: none;
+            }
 
-        /* ── FORMS ── */
-        .form-group { margin-bottom:16px; }
-        .form-group label { display:block; font-weight:700; margin-bottom:7px; font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; }
-        .form-group input,.form-group select,.form-group textarea {
-            width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px;
-            background:var(--surface2); color:var(--text); font-family:'Outfit',sans-serif; font-size:14px;
-            outline:none; transition:border-color .2s,box-shadow .2s;
-        }
-        .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-glow); }
-        .form-row { display:flex; gap:14px; }
-        .form-row > * { flex:1; }
-        .modal-footer { display:flex; gap:10px; margin-top:22px; padding-top:16px; border-top:1px solid var(--border); flex-wrap:wrap; }
-        .form-section-title { font-size:14px; font-weight:800; color:var(--text); margin:20px 0 14px; display:flex; align-items:center; gap:8px; }
-        .form-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+            /* ── LAYOUT ── */
+            #appLayout {
+                display: flex;
+                min-height: 100vh;
+            }
 
-        /* ── SUPPORT EDITOR TABS ── */
-        .tab-bar { display:flex; gap:6px; margin-bottom:24px; background:var(--surface2); padding:6px; border-radius:12px; border:1px solid var(--border); }
-        .tab-btn { flex:1; padding:10px; border:none; background:none; border-radius:8px; cursor:pointer; font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; color:var(--text-muted); transition:all .2s; }
-        .tab-btn.active { background:var(--surface); color:var(--primary); box-shadow:var(--shadow-sm); }
+            /* ── SIDEBAR ── */
+            #ownerSidebar {
+                width: var(--sidebar-w);
+                background: var(--surface);
+                border-right: 1px solid var(--border);
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 200;
+                display: flex;
+                flex-direction: column;
+                transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+                overflow-y: auto;
+            }
 
-        /* ── CATEGORY MANAGEMENT ── */
-        .cat-editor-item { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; margin-bottom:8px; gap:10px; transition:border-color .2s,box-shadow .2s; }
-        .cat-editor-item.editing { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-glow); background:var(--surface); }
-        .cat-name { font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px; flex:1; min-width:0; word-break:break-word; }
-        .cat-hidden-badge { background:rgba(243,156,18,.15); color:var(--warning); border:1px solid rgba(243,156,18,.3); padding:2px 8px; border-radius:50px; font-size:10px; font-weight:700; flex-shrink:0; }
-        .cat-actions-row { display:flex; gap:6px; flex-shrink:0; flex-wrap:wrap; }
-        .cat-rename-input {
-            flex:1; padding:7px 12px; border:1.5px solid var(--primary); border-radius:8px;
-            background:var(--surface); color:var(--text); font-family:'Outfit',sans-serif; font-size:14px;
-            font-weight:600; outline:none; min-width:0; box-shadow:0 0 0 2px var(--primary-glow);
-        }
-        .chip-save  { background:linear-gradient(135deg,#2ecc71,#27ae60); color:white; border:none; }
-        .chip-cancel{ background:linear-gradient(135deg,#bdc3c7,#95a5a6); color:white; border:none; }
+            .sidebar-brand-area {
+                padding: 24px 20px 20px;
+                border-bottom: 1px solid var(--border);
+            }
 
-        /* ── MY ACCOUNT ── */
-        .account-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-sm); max-width:520px; }
-        .account-card h3 { font-size:18px; font-weight:800; margin-bottom:20px; display:flex; align-items:center; gap:10px; color:var(--primary); }
-        .alert-box { padding:14px 16px; border-radius:10px; font-size:13px; font-weight:600; margin-bottom:16px; display:none; }
-        .alert-success { background:rgba(46,204,113,.12); color:#27ae60; border:1px solid rgba(46,204,113,.3); }
-        .alert-danger { background:rgba(231,76,60,.12); color:#e74c3c; border:1px solid rgba(231,76,60,.3); }
+            .sb-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 26px;
+                font-style: italic;
+                color: var(--primary);
+                margin-bottom: 6px;
+            }
 
-        /* ── TOAST ── */
-        #toast-container { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:9999; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
-        .toast { background:var(--text); color:var(--bg); padding:11px 24px; border-radius:50px; font-size:13px; font-weight:600; font-family:'Outfit',sans-serif; box-shadow:var(--shadow-lg); animation:toastIn .3s cubic-bezier(.22,1,.36,1) both; white-space:nowrap; }
-        .toast.out { animation:toastOut .3s ease both; }
-        @keyframes toastIn { from{transform:translateY(20px) scale(.9);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
-        @keyframes toastOut { to{transform:translateY(20px) scale(.9);opacity:0} }
+            .sb-role {
+                font-size: 11px;
+                font-weight: 800;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
 
-        /* ── RESPONSIVE ── */
-        @media(max-width:768px) {
-            #ownerSidebar { transform:translateX(-100%); }
-            #ownerSidebar.active { transform:translateX(0); }
-            #mainArea { margin-left:0; }
-            .ham-btn { display:block; }
-            #sidebarOverlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:199; display:none; backdrop-filter:blur(2px); }
-            #sidebarOverlay.active { display:block; }
-        }
-        @media(max-width:560px) { .form-row { flex-direction:column; } }
-    </style>
-</head>
-<body>
+            .sb-nav {
+                padding: 16px 12px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
 
-<!-- LOGIN -->
-<div id="loginScreen">
-    <div class="login-card">
-        <div class="login-logo">Country qart </div>
-        <div class="login-badge">Owner Panel</div>
-        <input type="text" id="ownerIdInput" placeholder="Owner ID" autocomplete="username">
-        <input type="password" id="ownerPassInput" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doOwnerLogin()">
-        <button class="btn-login" onclick="doOwnerLogin()"><i class="fas fa-shield-alt"></i> Login as Owner</button>
-        <div id="loginErr">Incorrect Owner ID or Password.</div>
-    </div>
-</div>
+            .sb-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 13px 16px;
+                border-radius: 10px;
+                color: var(--text-muted);
+                background: none;
+                border: none;
+                font-family: 'Outfit', sans-serif;
+                font-size: 15px;
+                font-weight: 500;
+                cursor: pointer;
+                text-align: left;
+                transition: all .2s;
+                position: relative;
+            }
 
-<!-- SIDEBAR OVERLAY (mobile) -->
-<div id="sidebarOverlay" onclick="closeSidebar()"></div>
+            .sb-item i {
+                width: 20px;
+                text-align: center;
+                font-size: 16px;
+            }
 
-<!-- APP LAYOUT -->
-<div id="appLayout">
+            .sb-item:hover {
+                background: var(--primary-glow);
+                color: var(--primary);
+            }
 
-    <!-- SIDEBAR -->
-    <aside id="ownerSidebar">
-        <div class="sidebar-brand-area">
-            <div class="sb-logo">Country qart </div>
-            <div class="sb-role">Owner Panel</div>
+            .sb-item.active {
+                background: var(--primary-glow);
+                color: var(--primary);
+                font-weight: 700;
+            }
+
+            .sb-item.active::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 3px;
+                height: 60%;
+                background: var(--primary);
+                border-radius: 0 3px 3px 0;
+            }
+
+            .sb-notif-badge {
+                background: var(--danger);
+                color: white;
+                font-size: 10px;
+                font-weight: 800;
+                padding: 2px 7px;
+                border-radius: 50px;
+                margin-left: auto;
+            }
+
+            .sb-footer {
+                padding: 16px 12px;
+                border-top: 1px solid var(--border);
+            }
+
+            .sb-logout {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 16px;
+                border-radius: 10px;
+                color: var(--danger);
+                background: none;
+                border: none;
+                font-family: 'Outfit', sans-serif;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                width: 100%;
+                transition: background .2s;
+            }
+
+            .sb-logout:hover {
+                background: rgba(231, 76, 60, .1);
+            }
+
+            /* ── MAIN AREA ── */
+            #mainArea {
+                margin-left: var(--sidebar-w);
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* ── HEADER ── */
+            #mainHeader {
+                height: var(--header-h);
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 28px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .header-title {
+                font-size: 20px;
+                font-weight: 800;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .theme-toggle {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                border-radius: 50px;
+                border: 1.5px solid var(--border);
+                background: var(--surface2);
+                cursor: pointer;
+                font-family: 'Outfit', sans-serif;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-muted);
+                transition: all .2s;
+            }
+
+            .theme-toggle:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+
+            .ham-btn {
+                display: none;
+                background: none;
+                border: none;
+                font-size: 22px;
+                cursor: pointer;
+                color: var(--text-muted);
+                padding: 6px;
+                border-radius: 8px;
+            }
+
+            .ham-btn:hover {
+                color: var(--primary);
+                background: var(--primary-glow);
+            }
+
+            /* ── CONTENT ── */
+            .content-area {
+                padding: 28px;
+                flex: 1;
+            }
+
+            .section {
+                display: none;
+                animation: fadeIn .35s ease both;
+            }
+
+            .section.active {
+                display: block;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px)
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0)
+                }
+            }
+
+            .page-title {
+                font-size: 26px;
+                font-weight: 800;
+                margin-bottom: 6px;
+            }
+
+            .page-subtitle {
+                color: var(--text-muted);
+                font-size: 14px;
+                margin-bottom: 28px;
+            }
+
+            /* ── METRIC CARDS ── */
+            .metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+                gap: 18px;
+                margin-bottom: 32px;
+            }
+
+            .metric-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 22px 20px;
+                box-shadow: var(--shadow-sm);
+                transition: transform .2s, box-shadow .2s;
+            }
+
+            .metric-card:hover {
+                transform: translateY(-3px);
+                box-shadow: var(--shadow-md);
+            }
+
+            .metric-clickable {
+                cursor: pointer;
+                transition: transform .2s, box-shadow .2s, border-color .2s;
+                border: 1.5px solid transparent;
+            }
+
+            .metric-clickable:hover {
+                border-color: var(--primary);
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .metric-clickable:active {
+                transform: scale(.97);
+            }
+
+            .metric-arrow {
+                font-size: 10px;
+                opacity: 0;
+                margin-left: 4px;
+                transition: opacity .2s, transform .2s;
+                transform: translateX(-4px);
+            }
+
+            .metric-clickable:hover .metric-arrow {
+                opacity: .6;
+                transform: translateX(0);
+            }
+
+            .metric-icon {
+                width: 46px;
+                height: 46px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                margin-bottom: 14px;
+            }
+
+            .metric-value {
+                font-size: 32px;
+                font-weight: 800;
+                margin-bottom: 4px;
+            }
+
+            .metric-label {
+                font-size: 13px;
+                color: var(--text-muted);
+                font-weight: 500;
+            }
+
+            /* ── SECTION HEADER ── */
+            .sec-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .sec-header h3 {
+                font-size: 18px;
+                font-weight: 800;
+            }
+
+            /* ── BUTTONS ── */
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 50px;
+                cursor: pointer;
+                font-family: 'Outfit', sans-serif;
+                font-size: 13px;
+                font-weight: 700;
+                transition: transform .2s, box-shadow .2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+
+            .btn:active {
+                transform: scale(.97);
+            }
+
+            .btn-blue {
+                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                color: white;
+            }
+
+            .btn-danger {
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                color: white;
+            }
+
+            .btn-warning {
+                background: linear-gradient(135deg, #f39c12, #e67e22);
+                color: white;
+            }
+
+            .btn-success {
+                background: linear-gradient(135deg, #2ecc71, #27ae60);
+                color: white;
+            }
+
+            .btn-ghost {
+                background: var(--surface2);
+                color: var(--text);
+                border: 1.5px solid var(--border);
+            }
+
+            .btn-ghost:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+
+            /* ── TABLE ── */
+            .table-wrap {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                overflow: hidden;
+                box-shadow: var(--shadow-sm);
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 600px;
+            }
+
+            thead {
+                background: var(--surface2);
+            }
+
+            th {
+                padding: 14px 16px;
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+            }
+
+            td {
+                padding: 14px 16px;
+                font-size: 14px;
+                border-bottom: 1px solid var(--border);
+                vertical-align: middle;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            tr:hover td {
+                background: var(--surface2);
+            }
+
+            .status-badge {
+                padding: 3px 10px;
+                border-radius: 50px;
+                font-size: 11px;
+                font-weight: 700;
+                display: inline-block;
+            }
+
+            .status-active {
+                background: rgba(46, 204, 113, .15);
+                color: #27ae60;
+                border: 1px solid rgba(46, 204, 113, .3);
+            }
+
+            .status-suspended {
+                background: rgba(231, 76, 60, .15);
+                color: #e74c3c;
+                border: 1px solid rgba(231, 76, 60, .3);
+            }
+
+            .td-actions {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .action-chip {
+                padding: 5px 12px;
+                border-radius: 50px;
+                border: 1px solid var(--border);
+                background: var(--surface2);
+                cursor: pointer;
+                font-size: 11px;
+                font-weight: 700;
+                font-family: 'Outfit', sans-serif;
+                color: var(--text-muted);
+                transition: all .2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .action-chip:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+                background: var(--primary-glow);
+            }
+
+            .action-chip.red:hover {
+                border-color: var(--danger);
+                color: var(--danger);
+                background: rgba(231, 76, 60, .1);
+            }
+
+            /* ── NOTIFICATIONS ── */
+            .notif-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 16px 18px;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-sm);
+                margin-bottom: 10px;
+                transition: border-color .2s;
+                position: relative;
+            }
+
+            .notif-item.unread {
+                border-left: 3px solid var(--primary);
+            }
+
+            .notif-dot {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                background: var(--primary-glow);
+                color: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .notif-body {
+                flex: 1;
+            }
+
+            .notif-msg {
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+
+            .notif-time {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+            .notif-del {
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: 14px;
+                padding: 4px;
+                border-radius: 6px;
+                transition: color .2s;
+                flex-shrink: 0;
+            }
+
+            .notif-del:hover {
+                color: var(--danger);
+            }
+
+            .empty-notif {
+                text-align: center;
+                padding: 48px 24px;
+                color: var(--text-muted);
+            }
+
+            .empty-notif i {
+                font-size: 48px;
+                opacity: .3;
+                display: block;
+                margin-bottom: 14px;
+            }
+
+            /* ── MODALS ── */
+            .modal-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .55);
+                backdrop-filter: blur(5px);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                padding: 16px;
+            }
+
+            .modal-overlay.open {
+                display: flex;
+            }
+
+            .modal-box {
+                background: var(--surface);
+                width: 100%;
+                max-width: 560px;
+                max-height: 92vh;
+                overflow-y: auto;
+                border-radius: 20px;
+                padding: 28px;
+                border: 1px solid var(--border);
+                box-shadow: var(--shadow-lg);
+                animation: modalIn .35s cubic-bezier(.22, 1, .36, 1) both;
+            }
+
+            @keyframes modalIn {
+                from {
+                    transform: translateY(30px) scale(.96);
+                    opacity: 0
+                }
+
+                to {
+                    transform: translateY(0) scale(1);
+                    opacity: 1
+                }
+            }
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 22px;
+                padding-bottom: 14px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .modal-header h2 {
+                font-size: 20px;
+                font-weight: 800;
+            }
+
+            .modal-close {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                color: var(--text);
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                transition: background .2s, transform .2s;
+            }
+
+            .modal-close:hover {
+                background: var(--danger);
+                color: white;
+                transform: rotate(90deg);
+            }
+
+            /* ── FORMS ── */
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-group label {
+                display: block;
+                font-weight: 700;
+                margin-bottom: 7px;
+                font-size: 12px;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: .5px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 12px 14px;
+                border: 1.5px solid var(--border);
+                border-radius: 10px;
+                background: var(--surface2);
+                color: var(--text);
+                font-family: 'Outfit', sans-serif;
+                font-size: 14px;
+                outline: none;
+                transition: border-color .2s, box-shadow .2s;
+            }
+
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px var(--primary-glow);
+            }
+
+            .form-row {
+                display: flex;
+                gap: 14px;
+            }
+
+            .form-row>* {
+                flex: 1;
+            }
+
+            .modal-footer {
+                display: flex;
+                gap: 10px;
+                margin-top: 22px;
+                padding-top: 16px;
+                border-top: 1px solid var(--border);
+                flex-wrap: wrap;
+            }
+
+            .form-section-title {
+                font-size: 14px;
+                font-weight: 800;
+                color: var(--text);
+                margin: 20px 0 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .form-section-title::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: var(--border);
+            }
+
+            /* ── SUPPORT EDITOR TABS ── */
+            .tab-bar {
+                display: flex;
+                gap: 6px;
+                margin-bottom: 24px;
+                background: var(--surface2);
+                padding: 6px;
+                border-radius: 12px;
+                border: 1px solid var(--border);
+            }
+
+            .tab-btn {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                background: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-family: 'Outfit', sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text-muted);
+                transition: all .2s;
+            }
+
+            .tab-btn.active {
+                background: var(--surface);
+                color: var(--primary);
+                box-shadow: var(--shadow-sm);
+            }
+
+            /* ── CATEGORY MANAGEMENT ── */
+            .cat-editor-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 16px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                margin-bottom: 8px;
+                gap: 10px;
+                transition: border-color .2s, box-shadow .2s;
+            }
+
+            .cat-editor-item.editing {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px var(--primary-glow);
+                background: var(--surface);
+            }
+
+            .cat-name {
+                font-size: 14px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex: 1;
+                min-width: 0;
+                word-break: break-word;
+            }
+
+            .cat-hidden-badge {
+                background: rgba(243, 156, 18, .15);
+                color: var(--warning);
+                border: 1px solid rgba(243, 156, 18, .3);
+                padding: 2px 8px;
+                border-radius: 50px;
+                font-size: 10px;
+                font-weight: 700;
+                flex-shrink: 0;
+            }
+
+            .cat-actions-row {
+                display: flex;
+                gap: 6px;
+                flex-shrink: 0;
+                flex-wrap: wrap;
+            }
+
+            .cat-rename-input {
+                flex: 1;
+                padding: 7px 12px;
+                border: 1.5px solid var(--primary);
+                border-radius: 8px;
+                background: var(--surface);
+                color: var(--text);
+                font-family: 'Outfit', sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                outline: none;
+                min-width: 0;
+                box-shadow: 0 0 0 2px var(--primary-glow);
+            }
+
+            .chip-save {
+                background: linear-gradient(135deg, #2ecc71, #27ae60);
+                color: white;
+                border: none;
+            }
+
+            .chip-cancel {
+                background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+                color: white;
+                border: none;
+            }
+
+            /* ── MY ACCOUNT ── */
+            .account-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 28px;
+                box-shadow: var(--shadow-sm);
+                max-width: 520px;
+            }
+
+            .account-card h3 {
+                font-size: 18px;
+                font-weight: 800;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: var(--primary);
+            }
+
+            .alert-box {
+                padding: 14px 16px;
+                border-radius: 10px;
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 16px;
+                display: none;
+            }
+
+            .alert-success {
+                background: rgba(46, 204, 113, .12);
+                color: #27ae60;
+                border: 1px solid rgba(46, 204, 113, .3);
+            }
+
+            .alert-danger {
+                background: rgba(231, 76, 60, .12);
+                color: #e74c3c;
+                border: 1px solid rgba(231, 76, 60, .3);
+            }
+
+            /* ── TOAST ── */
+            #toast-container {
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                pointer-events: none;
+            }
+
+            .toast {
+                background: var(--text);
+                color: var(--bg);
+                padding: 11px 24px;
+                border-radius: 50px;
+                font-size: 13px;
+                font-weight: 600;
+                font-family: 'Outfit', sans-serif;
+                box-shadow: var(--shadow-lg);
+                animation: toastIn .3s cubic-bezier(.22, 1, .36, 1) both;
+                white-space: nowrap;
+            }
+
+            .toast.out {
+                animation: toastOut .3s ease both;
+            }
+
+            @keyframes toastIn {
+                from {
+                    transform: translateY(20px) scale(.9);
+                    opacity: 0
+                }
+
+                to {
+                    transform: translateY(0) scale(1);
+                    opacity: 1
+                }
+            }
+
+            @keyframes toastOut {
+                to {
+                    transform: translateY(20px) scale(.9);
+                    opacity: 0
+                }
+            }
+
+            /* ── RESPONSIVE ── */
+            @media(max-width:768px) {
+                #ownerSidebar {
+                    transform: translateX(-100%);
+                }
+
+                #ownerSidebar.active {
+                    transform: translateX(0);
+                }
+
+                #mainArea {
+                    margin-left: 0;
+                }
+
+                .ham-btn {
+                    display: block;
+                }
+
+                #sidebarOverlay {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0, 0, 0, .4);
+                    z-index: 199;
+                    display: none;
+                    backdrop-filter: blur(2px);
+                }
+
+                #sidebarOverlay.active {
+                    display: block;
+                }
+            }
+
+            @media(max-width:560px) {
+                .form-row {
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- LOGIN -->
+        <div id="loginScreen">
+            <div class="login-card">
+                <div class="login-logo">Country qart </div>
+                <div class="login-badge">Owner Panel</div>
+                <input type="text" id="ownerIdInput" placeholder="Owner ID" autocomplete="username">
+                <input type="password" id="ownerPassInput" placeholder="Password" autocomplete="current-password"
+                    onkeydown="if(event.key==='Enter')doOwnerLogin()">
+                <button class="btn-login" onclick="doOwnerLogin()"><i class="fas fa-shield-alt"></i> Login as
+                    Owner</button>
+                <div id="loginErr">Incorrect Owner ID or Password.</div>
+            </div>
         </div>
-        <nav class="sb-nav">
-            <button class="sb-item active" data-sec="dashboard" onclick="showSection('dashboard',this)">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
-            </button>
-            <button class="sb-item" data-sec="notifications" onclick="showSection('notifications',this)">
-                <i class="fas fa-bell"></i> Notifications
-                <span class="sb-notif-badge" id="notifBadge" style="display:none;">0</span>
-            </button>
-            <button class="sb-item" data-sec="hostManagement" onclick="showSection('hostManagement',this)">
-                <i class="fas fa-users-cog"></i> Host Management
-            </button>
-            <button class="sb-item" data-sec="myAccount" onclick="showSection('myAccount',this)">
-                <i class="fas fa-user-shield"></i> My Account
-            </button>
-            <button class="sb-item" data-sec="supportEditor" onclick="showSection('supportEditor',this)">
-                <i class="fas fa-tools"></i> Support Editor
-            </button>
-        </nav>
-        <div class="sb-footer">
-            <button class="sb-logout" onclick="doOwnerLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        </div>
-    </aside>
 
-    <!-- MAIN AREA -->
-    <div id="mainArea">
+        <!-- SIDEBAR OVERLAY (mobile) -->
+        <div id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-        <!-- HEADER -->
-        <header id="mainHeader">
-            <div style="display:flex;align-items:center;gap:12px;">
-                <button class="ham-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                <span class="header-title" id="headerTitle">Dashboard</span>
-            </div>
-            <div class="header-right">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon" id="themeIcon"></i>
-                    <span id="themeLabel">Dark Mode</span>
-                </button>
-            </div>
-        </header>
+        <!-- APP LAYOUT -->
+        <div id="appLayout">
 
-        <!-- CONTENT -->
-        <div class="content-area">
-
-            <!-- ═══ DASHBOARD ═══ -->
-            <div id="sec-dashboard" class="section active">
-                <div class="page-title">Dashboard</div>
-                <div class="page-subtitle">Overview of your Country qart  platform.</div>
-                <div class="metrics-grid">
-                    <div class="metric-card metric-clickable" onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))" title="View all hosts">
-                        <div class="metric-icon" style="background:rgba(74,144,226,.12);color:var(--primary);"><i class="fas fa-users"></i></div>
-                        <div class="metric-value" id="metTotal">—</div>
-                        <div class="metric-label">Total Hosts <i class="fas fa-arrow-right metric-arrow"></i></div>
-                    </div>
-                    <div class="metric-card metric-clickable" onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))" title="View active hosts">
-                        <div class="metric-icon" style="background:rgba(46,204,113,.12);color:#27ae60;"><i class="fas fa-user-check"></i></div>
-                        <div class="metric-value" id="metActive">—</div>
-                        <div class="metric-label">Active Hosts <i class="fas fa-arrow-right metric-arrow"></i></div>
-                    </div>
-                    <div class="metric-card metric-clickable" onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))" title="View stopped hosts">
-                        <div class="metric-icon" style="background:rgba(231,76,60,.12);color:var(--danger);"><i class="fas fa-user-slash"></i></div>
-                        <div class="metric-value" id="metStopped">—</div>
-                        <div class="metric-label">Stopped Hosts <i class="fas fa-arrow-right metric-arrow"></i></div>
-                    </div>
-                    <div class="metric-card metric-clickable" onclick="showSection('notifications', document.querySelector('[data-sec=notifications]'))" title="View notifications">
-                        <div class="metric-icon" style="background:rgba(243,156,18,.12);color:var(--warning);"><i class="fas fa-bell"></i></div>
-                        <div class="metric-value" id="metNotifs">—</div>
-                        <div class="metric-label">Notifications <i class="fas fa-arrow-right metric-arrow"></i></div>
-                    </div>
-                    <div class="metric-card metric-clickable" onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))" title="View seller pages">
-                        <div class="metric-icon" style="background:rgba(142,68,173,.12);color:#8e44ad;"><i class="fas fa-store"></i></div>
-                        <div class="metric-value" id="metSellers">—</div>
-                        <div class="metric-label">Seller Pages <i class="fas fa-arrow-right metric-arrow"></i></div>
-                    </div>
-                    <div class="metric-card metric-clickable" onclick="showSection('supportEditor', document.querySelector('[data-sec=supportEditor]')); setTimeout(()=>switchTab('categories'),100);" title="Manage categories">
-                        <div class="metric-icon" style="background:rgba(74,144,226,.12);color:var(--primary);"><i class="fas fa-tags"></i></div>
-                        <div class="metric-value" id="metCategories">—</div>
-                        <div class="metric-label">Categories <i class="fas fa-arrow-right metric-arrow"></i></div>
-                    </div>
+            <!-- SIDEBAR -->
+            <aside id="ownerSidebar">
+                <div class="sidebar-brand-area">
+                    <div class="sb-logo">Country qart </div>
+                    <div class="sb-role">Owner Panel</div>
                 </div>
-                <div style="text-align:center;color:var(--text-muted);font-size:13px;padding:16px;">
-                    <i class="fas fa-info-circle" style="color:var(--primary);"></i>
-                    Tap any card above to jump to its section. All data syncs live from Firebase.
+                <nav class="sb-nav">
+                    <button class="sb-item active" data-sec="dashboard" onclick="showSection('dashboard',this)">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </button>
+                    <button class="sb-item" data-sec="notifications" onclick="showSection('notifications',this)">
+                        <i class="fas fa-bell"></i> Notifications
+                        <span class="sb-notif-badge" id="notifBadge" style="display:none;">0</span>
+                    </button>
+                    <button class="sb-item" data-sec="hostManagement" onclick="showSection('hostManagement',this)">
+                        <i class="fas fa-users-cog"></i> Host Management
+                    </button>
+                    <button class="sb-item" data-sec="myAccount" onclick="showSection('myAccount',this)">
+                        <i class="fas fa-user-shield"></i> My Account
+                    </button>
+                    <button class="sb-item" data-sec="supportEditor" onclick="showSection('supportEditor',this)">
+                        <i class="fas fa-tools"></i> Support Editor
+                    </button>
+                </nav>
+                <div class="sb-footer">
+                    <button class="sb-logout" onclick="doOwnerLogout()"><i class="fas fa-sign-out-alt"></i>
+                        Logout</button>
                 </div>
-            </div>
+            </aside>
 
-            <!-- ═══ NOTIFICATIONS ═══ -->
-            <div id="sec-notifications" class="section">
-                <div class="page-title">Notifications</div>
-                <div class="page-subtitle">All system activity and alerts.</div>
-                <div class="sec-header">
-                    <h3><i class="fas fa-bell" style="color:var(--primary);"></i> System Notifications</h3>
-                    <button class="btn btn-danger" onclick="clearAllNotifications()"><i class="fas fa-trash-alt"></i> Clear All</button>
-                </div>
-                <div id="notifList">
-                    <div class="empty-notif"><i class="fas fa-bell-slash"></i><p>No notifications yet.</p></div>
-                </div>
-            </div>
+            <!-- MAIN AREA -->
+            <div id="mainArea">
 
-            <!-- ═══ HOST MANAGEMENT ═══ -->
-            <div id="sec-hostManagement" class="section">
-                <div class="page-title">Host Management</div>
-                <div class="page-subtitle">Create, edit, stop/resume, or delete host accounts.</div>
-                <div class="sec-header">
-                    <h3><i class="fas fa-users-cog" style="color:var(--primary);"></i> Host Accounts</h3>
-                    <button class="btn btn-blue" onclick="openHostModal(null)"><i class="fas fa-plus"></i> Add Host</button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Host ID</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Seller Page</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="hostsTableBody">
-                            <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:28px;">Loading hosts...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                <!-- HEADER -->
+                <header id="mainHeader">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <button class="ham-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                        <span class="header-title" id="headerTitle">Dashboard</span>
+                    </div>
+                    <div class="header-right">
+                        <button class="theme-toggle" onclick="toggleTheme()">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                            <span id="themeLabel">Dark Mode</span>
+                        </button>
+                    </div>
+                </header>
 
-            <!-- ═══ MY ACCOUNT ═══ -->
-            <div id="sec-myAccount" class="section">
-                <div class="page-title">My Account</div>
-                <div class="page-subtitle">Change your Owner ID and password.</div>
-                <div class="account-card">
-                    <h3><i class="fas fa-user-shield"></i> Update Owner Credentials</h3>
-                    <div class="alert-box alert-success" id="accountSuccess"><i class="fas fa-check-circle"></i> Credentials updated successfully!</div>
-                    <div class="alert-box alert-danger" id="accountError"></div>
+                <!-- CONTENT -->
+                <div class="content-area">
+
+                    <!-- ═══ DASHBOARD ═══ -->
+                    <div id="sec-dashboard" class="section active">
+                        <div class="page-title">Dashboard</div>
+                        <div class="page-subtitle">Overview of your Country qart platform.</div>
+                        <div class="metrics-grid">
+                            <div class="metric-card metric-clickable"
+                                onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))"
+                                title="View all hosts">
+                                <div class="metric-icon" style="background:rgba(74,144,226,.12);color:var(--primary);">
+                                    <i class="fas fa-users"></i></div>
+                                <div class="metric-value" id="metTotal">—</div>
+                                <div class="metric-label">Total Hosts <i class="fas fa-arrow-right metric-arrow"></i>
+                                </div>
+                            </div>
+                            <div class="metric-card metric-clickable"
+                                onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))"
+                                title="View active hosts">
+                                <div class="metric-icon" style="background:rgba(46,204,113,.12);color:#27ae60;"><i
+                                        class="fas fa-user-check"></i></div>
+                                <div class="metric-value" id="metActive">—</div>
+                                <div class="metric-label">Active Hosts <i class="fas fa-arrow-right metric-arrow"></i>
+                                </div>
+                            </div>
+                            <div class="metric-card metric-clickable"
+                                onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))"
+                                title="View stopped hosts">
+                                <div class="metric-icon" style="background:rgba(231,76,60,.12);color:var(--danger);"><i
+                                        class="fas fa-user-slash"></i></div>
+                                <div class="metric-value" id="metStopped">—</div>
+                                <div class="metric-label">Stopped Hosts <i class="fas fa-arrow-right metric-arrow"></i>
+                                </div>
+                            </div>
+                            <div class="metric-card metric-clickable"
+                                onclick="showSection('notifications', document.querySelector('[data-sec=notifications]'))"
+                                title="View notifications">
+                                <div class="metric-icon" style="background:rgba(243,156,18,.12);color:var(--warning);">
+                                    <i class="fas fa-bell"></i></div>
+                                <div class="metric-value" id="metNotifs">—</div>
+                                <div class="metric-label">Notifications <i class="fas fa-arrow-right metric-arrow"></i>
+                                </div>
+                            </div>
+                            <div class="metric-card metric-clickable"
+                                onclick="showSection('hostManagement', document.querySelector('[data-sec=hostManagement]'))"
+                                title="View seller pages">
+                                <div class="metric-icon" style="background:rgba(142,68,173,.12);color:#8e44ad;"><i
+                                        class="fas fa-store"></i></div>
+                                <div class="metric-value" id="metSellers">—</div>
+                                <div class="metric-label">Seller Pages <i class="fas fa-arrow-right metric-arrow"></i>
+                                </div>
+                            </div>
+                            <div class="metric-card metric-clickable"
+                                onclick="showSection('supportEditor', document.querySelector('[data-sec=supportEditor]')); setTimeout(()=>switchTab('categories'),100);"
+                                title="Manage categories">
+                                <div class="metric-icon" style="background:rgba(74,144,226,.12);color:var(--primary);">
+                                    <i class="fas fa-tags"></i></div>
+                                <div class="metric-value" id="metCategories">—</div>
+                                <div class="metric-label">Categories <i class="fas fa-arrow-right metric-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align:center;color:var(--text-muted);font-size:13px;padding:16px;">
+                            <i class="fas fa-info-circle" style="color:var(--primary);"></i>
+                            Tap any card above to jump to its section. All data syncs live from Firebase.
+                        </div>
+                    </div>
+
+                    <!-- ═══ NOTIFICATIONS ═══ -->
+                    <div id="sec-notifications" class="section">
+                        <div class="page-title">Notifications</div>
+                        <div class="page-subtitle">All system activity and alerts.</div>
+                        <div class="sec-header">
+                            <h3><i class="fas fa-bell" style="color:var(--primary);"></i> System Notifications</h3>
+                            <button class="btn btn-danger" onclick="clearAllNotifications()"><i
+                                    class="fas fa-trash-alt"></i> Clear All</button>
+                        </div>
+                        <div id="notifList">
+                            <div class="empty-notif"><i class="fas fa-bell-slash"></i>
+                                <p>No notifications yet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ HOST MANAGEMENT ═══ -->
+                    <div id="sec-hostManagement" class="section">
+                        <div class="page-title">Host Management</div>
+                        <div class="page-subtitle">Create, edit, stop/resume, or delete host accounts.</div>
+                        <div class="sec-header">
+                            <h3><i class="fas fa-users-cog" style="color:var(--primary);"></i> Host Accounts</h3>
+                            <button class="btn btn-blue" onclick="openHostModal(null)"><i class="fas fa-plus"></i> Add
+                                Host</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Host ID</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Seller Page</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hostsTableBody">
+                                    <tr>
+                                        <td colspan="6" style="text-align:center;color:var(--text-muted);padding:28px;">
+                                            Loading hosts...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ═══ MY ACCOUNT ═══ -->
+                    <div id="sec-myAccount" class="section">
+                        <div class="page-title">My Account</div>
+                        <div class="page-subtitle">Change your Owner ID and password.</div>
+                        <div class="account-card">
+                            <h3><i class="fas fa-user-shield"></i> Update Owner Credentials</h3>
+                            <div class="alert-box alert-success" id="accountSuccess"><i class="fas fa-check-circle"></i>
+                                Credentials updated successfully!</div>
+                            <div class="alert-box alert-danger" id="accountError"></div>
+                            <div class="form-group">
+                                <label>New Owner ID</label>
+                                <input type="text" id="newOwnerId" placeholder="Enter new Owner ID">
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="newOwnerPass" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmOwnerPass" placeholder="Re-enter new password">
+                            </div>
+                            <hr style="border:1px solid var(--border);margin:16px 0;">
+                            <div class="form-group">
+                                <label>Current Password <small style="color:var(--danger);">(required for
+                                        verification)</small></label>
+                                <input type="password" id="oldOwnerPass" placeholder="Enter your current password">
+                            </div>
+                            <button class="btn btn-blue" onclick="updateOwnerAccount()"><i class="fas fa-save"></i>
+                                Update Credentials</button>
+                        </div>
+                    </div>
+
+                    <!-- ═══ SUPPORT EDITOR ═══ -->
+                    <div id="sec-supportEditor" class="section">
+                        <div class="page-title">Support Editor</div>
+                        <div class="page-subtitle">Manage support contacts and site categories. Changes are visible to
+                            all users.</div>
+
+                        <div class="tab-bar">
+                            <button class="tab-btn active" id="tab-support" onclick="switchTab('support')"><i
+                                    class="fas fa-headset"></i> Support Details</button>
+                            <button class="tab-btn" id="tab-categories" onclick="switchTab('categories')"><i
+                                    class="fas fa-tags"></i> Categories</button>
+                        </div>
+
+                        <!-- Support Details Tab -->
+                        <div id="tabContent-support">
+                            <div
+                                style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+                                <div class="form-group">
+                                    <label>Support Message / Timing</label>
+                                    <textarea id="supMsg" rows="2"
+                                        placeholder="e.g. Available Mon–Fri, 10 AM – 6 PM"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Support Phone</label>
+                                        <input type="tel" id="supPhone" placeholder="+91 0000000000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Support Email</label>
+                                        <input type="email" id="supEmail" placeholder="support@Country qart .com">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>WhatsApp Number</label>
+                                        <input type="tel" id="supWhatsApp" placeholder="+91 0000000000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fas fa-map-pin" style="color:#e74c3c;"></i> Google Maps
+                                            Link</label>
+                                        <input type="url" id="supMap" placeholder="https://maps.app.goo.gl/...">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label><i class="fab fa-instagram" style="color:#E1306C;"></i> Instagram</label>
+                                        <input type="url" id="supInsta" placeholder="https://instagram.com/...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fab fa-facebook-f" style="color:#1877F2;"></i> Facebook</label>
+                                        <input type="url" id="supFb" placeholder="https://facebook.com/...">
+                                    </div>
+                                </div>
+                                <button class="btn btn-blue" onclick="saveSupportData()"><i class="fas fa-save"></i>
+                                    Save Support Details</button>
+                            </div>
+                        </div>
+
+                        <!-- Categories Tab -->
+                        <div id="tabContent-categories" style="display:none;">
+                            <div
+                                style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+                                <div class="sec-header" style="margin-bottom:20px;">
+                                    <h3>Category List</h3>
+                                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                        <input type="text" id="newCatInput" placeholder="New category name..."
+                                            style="padding:9px 14px;border:1.5px solid var(--border);border-radius:50px;background:var(--surface2);color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;width:200px;">
+                                        <button class="btn btn-blue" onclick="addCategory()"><i class="fas fa-plus"></i>
+                                            Add</button>
+                                    </div>
+                                </div>
+                                <div id="categoryEditorList">
+                                    <p style="color:var(--text-muted);font-size:13px;">Loading categories...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /content-area -->
+            </div><!-- /mainArea -->
+        </div><!-- /appLayout -->
+
+        <!-- HOST ADD/EDIT MODAL -->
+        <div id="hostModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h2 id="hostModalTitle">Add New Host</h2>
+                    <button class="modal-close" onclick="closeModal('hostModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <input type="hidden" id="hostEditKey">
+                <div class="form-group">
+                    <label>Host Display Name</label>
+                    <input type="text" id="hostName" placeholder="e.g. Ravi Kumar">
+                </div>
+                <div class="form-row">
                     <div class="form-group">
-                        <label>New Owner ID</label>
-                        <input type="text" id="newOwnerId" placeholder="Enter new Owner ID">
+                        <label>Host Login ID *</label>
+                        <input type="text" id="hostId" placeholder="e.g. ravi_host">
                     </div>
                     <div class="form-group">
-                        <label>New Password</label>
-                        <input type="password" id="newOwnerPass" placeholder="Enter new password">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" id="confirmOwnerPass" placeholder="Re-enter new password">
-                    </div>
-                    <hr style="border:1px solid var(--border);margin:16px 0;">
-                    <div class="form-group">
-                        <label>Current Password <small style="color:var(--danger);">(required for verification)</small></label>
-                        <input type="password" id="oldOwnerPass" placeholder="Enter your current password">
-                    </div>
-                    <button class="btn btn-blue" onclick="updateOwnerAccount()"><i class="fas fa-save"></i> Update Credentials</button>
-                </div>
-            </div>
-
-            <!-- ═══ SUPPORT EDITOR ═══ -->
-            <div id="sec-supportEditor" class="section">
-                <div class="page-title">Support Editor</div>
-                <div class="page-subtitle">Manage support contacts and site categories. Changes are visible to all users.</div>
-
-                <div class="tab-bar">
-                    <button class="tab-btn active" id="tab-support" onclick="switchTab('support')"><i class="fas fa-headset"></i> Support Details</button>
-                    <button class="tab-btn" id="tab-categories" onclick="switchTab('categories')"><i class="fas fa-tags"></i> Categories</button>
-                </div>
-
-                <!-- Support Details Tab -->
-                <div id="tabContent-support">
-                    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
-                        <div class="form-group">
-                            <label>Support Message / Timing</label>
-                            <textarea id="supMsg" rows="2" placeholder="e.g. Available Mon–Fri, 10 AM – 6 PM"></textarea>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Support Phone</label>
-                                <input type="tel" id="supPhone" placeholder="+91 0000000000">
-                            </div>
-                            <div class="form-group">
-                                <label>Support Email</label>
-                                <input type="email" id="supEmail" placeholder="support@Country qart .com">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>WhatsApp Number</label>
-                                <input type="tel" id="supWhatsApp" placeholder="+91 0000000000">
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-map-pin" style="color:#e74c3c;"></i> Google Maps Link</label>
-                                <input type="url" id="supMap" placeholder="https://maps.app.goo.gl/...">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label><i class="fab fa-instagram" style="color:#E1306C;"></i> Instagram</label>
-                                <input type="url" id="supInsta" placeholder="https://instagram.com/...">
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fab fa-facebook-f" style="color:#1877F2;"></i> Facebook</label>
-                                <input type="url" id="supFb" placeholder="https://facebook.com/...">
-                            </div>
-                        </div>
-                        <button class="btn btn-blue" onclick="saveSupportData()"><i class="fas fa-save"></i> Save Support Details</button>
+                        <label>Password *</label>
+                        <input type="password" id="hostPassword" placeholder="Set a password">
                     </div>
                 </div>
-
-                <!-- Categories Tab -->
-                <div id="tabContent-categories" style="display:none;">
-                    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
-                        <div class="sec-header" style="margin-bottom:20px;">
-                            <h3>Category List</h3>
-                            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                                <input type="text" id="newCatInput" placeholder="New category name..." style="padding:9px 14px;border:1.5px solid var(--border);border-radius:50px;background:var(--surface2);color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;width:200px;">
-                                <button class="btn btn-blue" onclick="addCategory()"><i class="fas fa-plus"></i> Add</button>
-                            </div>
-                        </div>
-                        <div id="categoryEditorList">
-                            <p style="color:var(--text-muted);font-size:13px;">Loading categories...</p>
-                        </div>
-                    </div>
+                <div class="modal-footer">
+                    <button class="btn btn-blue" onclick="saveHost()"><i class="fas fa-save"></i> Save Host</button>
+                    <button class="btn btn-danger" id="hostDeleteBtn" onclick="deleteHost()" style="display:none;"><i
+                            class="fas fa-trash"></i> Delete Host</button>
+                    <button class="btn btn-ghost" onclick="closeModal('hostModal')">Cancel</button>
                 </div>
             </div>
-
-        </div><!-- /content-area -->
-    </div><!-- /mainArea -->
-</div><!-- /appLayout -->
-
-<!-- HOST ADD/EDIT MODAL -->
-<div id="hostModal" class="modal-overlay">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h2 id="hostModalTitle">Add New Host</h2>
-            <button class="modal-close" onclick="closeModal('hostModal')"><i class="fas fa-times"></i></button>
         </div>
-        <input type="hidden" id="hostEditKey">
-        <div class="form-group">
-            <label>Host Display Name</label>
-            <input type="text" id="hostName" placeholder="e.g. Ravi Kumar">
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label>Host Login ID *</label>
-                <input type="text" id="hostId" placeholder="e.g. ravi_host">
-            </div>
-            <div class="form-group">
-                <label>Password *</label>
-                <input type="password" id="hostPassword" placeholder="Set a password">
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-blue" onclick="saveHost()"><i class="fas fa-save"></i> Save Host</button>
-            <button class="btn btn-danger" id="hostDeleteBtn" onclick="deleteHost()" style="display:none;"><i class="fas fa-trash"></i> Delete Host</button>
-            <button class="btn btn-ghost" onclick="closeModal('hostModal')">Cancel</button>
-        </div>
-    </div>
-</div>
 
-<!-- TOAST -->
-<div id="toast-container"></div>
+        <!-- TOAST -->
+        <div id="toast-container"></div>
 
-<!-- FIREBASE MODULE -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        <!-- FIREBASE MODULE -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getDatabase, ref, push, set, onValue, remove, update, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
  const firebaseConfig = {
@@ -1080,11 +1978,11 @@
         }, 800);
     }
 
-</script>
+        </script>
 
-<!-- UI Script -->
-<script>
-    (function() {
+        <!-- UI Script -->
+        <script>
+            (function() {
         if(localStorage.getItem('Country qart Theme') === 'dark') document.documentElement.setAttribute('data-theme','dark');
         syncThemeUI();
     })();
@@ -1152,7 +2050,8 @@
     document.addEventListener('keydown', e => {
         if(e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
     });
-</script>
+        </script>
 
-</body>
+    </body>
+
 </html>
